@@ -9,7 +9,7 @@ namespace LD56.Assets.Scripts
     {
         public int GodPower;
         public int DevilPower;
-        public int PeopleNumber;
+        public float PeopleNumber;
         public float PeopleFood;
         public float PeopleHappiness;
         public float PeopleHealth;
@@ -19,11 +19,15 @@ namespace LD56.Assets.Scripts
         public Data() {
             GodPower = 0;
             DevilPower = 0;
-            PeopleNumber = 2;
-            PeopleFood = 100;
+            PeopleNumber = 0;
+            PeopleFood = 20;
             PeopleHappiness = 100;
             PeopleHealth = 100;
             PeopleTechnology = 0;
+        }
+
+        public void SetPeopleNumber(int peopleNumber) {
+            PeopleNumber = peopleNumber;
         }
     }
 }

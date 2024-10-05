@@ -1,6 +1,8 @@
 using LD56.Assets.Scripts.UI;
+using System.Collections.Generic;
+using UnityEngine;
 
-namespace LD56.Assets.Scripts  {
+namespace LD56.Assets.Scripts {
     public enum GameState {
         Menu,
         Playing,
@@ -24,5 +26,11 @@ namespace LD56.Assets.Scripts  {
         // Полные пути к аудиофайлам
         public const string MainThemePath = AudioPath + MainTheme;
         public const string EffectSoundPath = AudioPath + Effect;
+
+        public static Color ColorFromRGB(int r, int g, int b) {
+            return new Color(r / 255f, g / 255f, b / 255f);
+        }
     }
+
+
 }

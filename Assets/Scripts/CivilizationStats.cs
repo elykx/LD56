@@ -5,7 +5,7 @@ namespace LD56.Assets.Scripts {
     public class CivilizationStats : MonoBehaviour {
         // Основные параметры
         public float targetPopulation = 1000f;
-        public float growthDuration = 10f;
+        public float growthDuration = 1f;
 
         // Коэффициенты влияния
         public float foodFactor => data.PeopleFood / 100f;
@@ -26,12 +26,16 @@ namespace LD56.Assets.Scripts {
 
         public void SetData(Data initData) {
             data = initData;
+        }
 
-            growthRate = Mathf.Log(targetPopulation / data.PeopleNumber) / growthDuration;
+        public void SetPeopleNum(int num) {
+            data.SetPeopleNumber(num);
         }
 
         void Update() {
-            if (data == null) return;
+            if (data == null || data.PeopleNumber == 0) return;
+
+            growthRate = Mathf.Log(targetPopulation / data.PeopleNumber) / growthDuration;
 
             UpdatePopulation();
             UpdateHappiness();
@@ -67,6 +71,34 @@ namespace LD56.Assets.Scripts {
                 data.PeopleHappiness = 0;
                 healthChange -= 5f;
             }
+        }
+
+        public void IncreaseHappiness(int amount) {
+            data.PeopleHappiness += amount;
+            if (data.PeopleHappiness > 100)
+                data.PeopleHappiness = 100;
+        }
+
+        public void IncreaseFood(int amount) {
+            data.PeopleFood += amount;
+            if (data.PeopleFood > 100)
+                data.PeopleFood = 100;
+        }
+
+        public void IncreaseHealth(int amount) {
+            data.PeopleHealth += amount;
+            if (data.PeopleHealth > 100)
+                data.PeopleHealth = 100;
+        }
+        public void IncreasePopulation(int amount) {
+            data.PeopleNumber += amount;
+            if (data.PeopleNumber > 1000)
+                data.PeopleNumber = 1000;
+        }
+        public void IncreaseTechnology(int amount) {
+            data.PeopleTechnology += amount;
+            if (data.PeopleTechnology > 100)
+                data.PeopleTechnology = 100;
         }
 
         private void UpdatePopulation() {
