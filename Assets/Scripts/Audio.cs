@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LD56.Assets {
+namespace LD56.Assets.Scripts {
     public class Audio : MonoBehaviour {
-        public AudioSource musicSource; // AudioSource для фоновой музыки
-        public AudioSource effectsSource; // AudioSource для звуковых эффектов
+        public AudioSource musicSource;
+        public AudioSource effectsSource;
 
         public Dictionary<string, AudioClip> musicClips = new Dictionary<string, AudioClip>();
         public Dictionary<string, AudioClip> soundEffects = new Dictionary<string, AudioClip>();
@@ -23,7 +23,7 @@ namespace LD56.Assets {
         public void PlayMusic(string clipName, bool loop = false) {
             if (musicClips.ContainsKey(clipName)) {
                 musicSource.clip = musicClips[clipName];
-                musicSource.loop = loop; // Устанавливаем зацикливание
+                musicSource.loop = loop;
                 musicSource.Play();
             }
             else {
@@ -35,7 +35,6 @@ namespace LD56.Assets {
             musicSource.Stop();
         }
 
-        // Воспроизведение звукового эффекта по ключу
         public void PlaySoundEffect(string clipName) {
             if (soundEffects.ContainsKey(clipName)) {
                 effectsSource.PlayOneShot(soundEffects[clipName]);

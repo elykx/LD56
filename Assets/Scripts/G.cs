@@ -1,5 +1,6 @@
-using LD56.Assets.UI;
-namespace LD56.Assets {
+using LD56.Assets.Scripts.UI;
+
+namespace LD56.Assets.Scripts  {
     public enum GameState {
         Menu,
         Playing,
@@ -12,6 +13,7 @@ namespace LD56.Assets {
         public static Audio audio;
 
         public static GameState currentState;
+        public static Data data;
 
         // Названия клипов
         public const string MainTheme = "Music";
@@ -23,36 +25,4 @@ namespace LD56.Assets {
         public const string MainThemePath = AudioPath + MainTheme;
         public const string EffectSoundPath = AudioPath + Effect;
     }
-
-
-    // public class ManagedBehaviour : MonoBehaviour
-    // {
-    //     void Update()
-    //     {
-    //         if (!G.isPaused)
-    //         {
-    //             PausableUpdate();
-    //         }
-    //     }
-    //     public virtual void PausableUpdate()
-    //     {
-
-    //     }
-
-    //     void FixedUpdate()
-    //     {
-    //         if (!G.isPaused)
-    //         {
-    //             PausableUpdate();
-    //         }
-    //     }
-
-    //     public virtual void PausableFixedUpdate()
-    //     {
-
-    //     }
-    // }
-
-
-
 }
