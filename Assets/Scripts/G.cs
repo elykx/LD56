@@ -18,13 +18,13 @@ namespace LD56.Assets.Scripts {
         public static Data data;
 
         // Названия клипов
-        public const string MainTheme = "Music";
+        public const string NewBeginningTheme = "newBeginning";
         public const string Effect = "OneEffect";
 
         public const string AudioPath = "Audio/";
 
         // Полные пути к аудиофайлам
-        public const string MainThemePath = AudioPath + MainTheme;
+        public const string NewBeginningPath = AudioPath + NewBeginningTheme;
         public const string EffectSoundPath = AudioPath + Effect;
 
         public static Color ColorFromRGB(int r, int g, int b) {

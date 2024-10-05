@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPEffects.Components;
 using TMPro;
@@ -29,9 +30,7 @@ namespace LD56.Assets.Scripts.UI {
         public TMPWriter textAnimatorGod;
         public TMPWriter textAnimatorDevil;
 
-        private float dialogueDuration = 15f;
-        private float godDialogueStartTime;
-        private float devilDialogueStartTime;
+        private float dialogueDuration = 6f;
 
         private void Awake() {
             G.ui = this;
@@ -46,7 +45,6 @@ namespace LD56.Assets.Scripts.UI {
             }
             else if (Input.GetKeyDown(KeyCode.Escape) && G.currentState == GameState.Paused) {
                 SetGameState(GameState.Playing);
-                G.audio.PlayMusic(G.MainTheme, true);
             }
             else if (Input.GetKeyDown(KeyCode.E) && G.currentState == GameState.Paused) {
                 SetGameState(GameState.Menu);
@@ -54,11 +52,9 @@ namespace LD56.Assets.Scripts.UI {
             }
             else if (Input.GetKeyDown(KeyCode.E) && G.currentState == GameState.Menu) {
                 SetGameState(GameState.Playing);
-                G.audio.PlayMusic(G.MainTheme, true);
             }
 
             UpdateHeader();
-            UpdateDialogue();
         }
 
         private void UpdateUI() {
@@ -109,7 +105,7 @@ namespace LD56.Assets.Scripts.UI {
         public void StartGodDialogue(string text) {
             if (!isGodDialogueActive) {
                 isGodDialogueActive = true;
-                devilDialogueStartTime = Time.time;
+                StartCoroutine(AutoCloseDialogue(godDialogue)); // Запускаем корутину
                 ShowGodDialogue(text);
             }
         }
@@ -117,8 +113,23 @@ namespace LD56.Assets.Scripts.UI {
         public void StartDevilDialogue(string text) {
             if (!isDevilDialogueActive) {
                 isDevilDialogueActive = true;
-                godDialogueStartTime = Time.time;
                 ShowDevilDialogue(text);
+                StartCoroutine(AutoCloseDialogue(devilDialogue)); // Запускаем корутину
+            }
+        }
+
+        private IEnumerator AutoCloseDialogue(GameObject dialogueObject) {
+            Debug.Log("start timer");
+            yield return new WaitForSeconds(dialogueDuration);
+            Debug.Log("end timer");
+            CloseDialogue(dialogueObject);
+
+            // Обновляем состояние активности диалога
+            if (dialogueObject == godDialogue) {
+                isGodDialogueActive = false;
+            }
+            else if (dialogueObject == devilDialogue) {
+                isDevilDialogueActive = false;
             }
         }
         private void ShowGodDialogue(string text) {
@@ -143,35 +154,15 @@ namespace LD56.Assets.Scripts.UI {
             textAnimatorDevil.StartWriter();
         }
 
-        private void UpdateDialogue() {
-            if (isGodDialogueActive) {
-                if (Input.GetMouseButtonDown(0)) {
-                    CloseDialogue(godDialogue);
-                    isGodDialogueActive = false;
-                }
-
-                if (Time.time - godDialogueStartTime > dialogueDuration) {
-                    CloseDialogue(godDialogue);
-                    isGodDialogueActive = false;
-                }
-            }
-
-            if (isDevilDialogueActive) {
-                if (Input.GetMouseButtonDown(0)) {
-                    CloseDialogue(devilDialogue);
-                    isDevilDialogueActive = false;
-                }
-
-                if (Time.time - devilDialogueStartTime > dialogueDuration) {
-                    CloseDialogue(devilDialogue);
-                    isDevilDialogueActive = false;
-                }
-            }
-        }
-
         private void CloseDialogue(GameObject dialogueObject) {
+            Debug.Log("Attempting to close dialogue for object: " + dialogueObject.name + " Active: " + dialogueObject.activeSelf);
+            // Проверяем, активен ли объект, чтобы избежать попытки закрытия уже неактивного объекта
+            if (!dialogueObject.activeSelf) return;
+
+            Debug.Log("close dialogue");
             LeanTween.scale(dialogueObject, Vector3.zero, 2f).setEaseInBack().setOnComplete(() => {
-                dialogueObject.SetActive(false);
+                dialogueObject.SetActive(false); // Отключаем объект после завершения анимации
+                Debug.Log("dialogue closed");
             });
         }
 

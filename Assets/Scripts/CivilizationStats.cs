@@ -112,7 +112,6 @@ namespace LD56.Assets.Scripts {
                 if (data.PeopleNumber > targetPopulation)
                     data.PeopleNumber = (int)targetPopulation;
 
-                Debug.Log("Elapsed Time: " + elapsedTime + " Population: " + data.PeopleNumber);
             }
         }
     }

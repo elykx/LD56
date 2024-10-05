@@ -142,13 +142,13 @@ TextureImporter:
       name: god1_0
       rect:
         serializedVersion: 2
-        x: 180
-        y: 0
+        x: 80
+        y: 56
         width: 332
-        height: 512
+        height: 456
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 0, y: 1, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
@@ -175,6 +175,7 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       god1_0: 6563236475585998839
+      god1_1: 1341950751
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

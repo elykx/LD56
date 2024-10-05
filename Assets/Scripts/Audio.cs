@@ -11,11 +11,11 @@ namespace LD56.Assets.Scripts {
 
         private void Awake() {
             G.audio = this;
-            musicClips.Add(G.MainTheme, Resources.Load<AudioClip>(G.MainThemePath));
+            musicClips.Add(G.NewBeginningTheme, Resources.Load<AudioClip>(G.NewBeginningPath));
             soundEffects.Add(G.Effect, Resources.Load<AudioClip>(G.EffectSoundPath));
 
-            if (musicClips[G.MainTheme] == null)
-                Debug.LogError($"Не удалось загрузить музыкальный клип {G.MainThemePath}");
+            if (musicClips[G.NewBeginningTheme] == null)
+                Debug.LogError($"Не удалось загрузить музыкальный клип {G.NewBeginningPath}");
             if (soundEffects[G.Effect] == null)
                 Debug.LogError($"Не удалось загрузить звуковой эффект {G.EffectSoundPath}");
         }

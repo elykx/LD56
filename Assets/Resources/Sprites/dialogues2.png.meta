@@ -145,12 +145,12 @@ TextureImporter:
       name: dialogues2_0
       rect:
         serializedVersion: 2
-        x: 79
-        y: 171
-        width: 296
-        height: 228
+        x: 75
+        y: 252
+        width: 302
+        height: 240
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -167,12 +167,12 @@ TextureImporter:
       name: dialogues2_1
       rect:
         serializedVersion: 2
-        x: 500
-        y: 181
-        width: 311
-        height: 237
+        x: 498
+        y: 263
+        width: 320
+        height: 241
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -185,11 +185,77 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: dialogues2_2
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 51
+        width: 221
+        height: 112
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2f3ec1293550ef4ab792d6aafcf9795
+      internalID: 837629486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dialogues2_3
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 51
+        width: 212
+        height: 106
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9bbc7a3d31829342b6306369888e27e
+      internalID: 58563284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dialogues2_4
+      rect:
+        serializedVersion: 2
+        x: 716
+        y: 55
+        width: 297
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da7b3e51fc9206447bd7466230b7ad27
+      internalID: 1545443494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: d8617e6fbe61360478ce049438226c15
     internalID: 0
     vertices: []
     indices: 
@@ -201,6 +267,9 @@ TextureImporter:
     nameFileIdTable:
       dialogues2_0: 8718206035585879849
       dialogues2_1: -9114173326199342884
+      dialogues2_2: 837629486
+      dialogues2_3: 58563284
+      dialogues2_4: 1545443494
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
