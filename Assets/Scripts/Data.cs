@@ -12,18 +12,14 @@ namespace LD56.Assets.Scripts
         public float PeopleNumber;
         public float PeopleFood;
         public float PeopleHappiness;
-        public float PeopleHealth;
-        public float PeopleTechnology;
 
 
         public Data() {
             GodPower = 0;
             DevilPower = 0;
             PeopleNumber = 0;
-            PeopleFood = 20;
-            PeopleHappiness = 100;
-            PeopleHealth = 100;
-            PeopleTechnology = 0;
+            PeopleFood = 20f;
+            PeopleHappiness = 100f;
         }
 
         public void SetPeopleNumber(int peopleNumber) {

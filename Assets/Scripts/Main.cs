@@ -35,11 +35,9 @@ namespace LD56.Assets.Scripts {
 
         void Start() {
             G.ui.SetGameState(GameState.Playing);
-            G.ui.AddNewCard(CardLibrary.healthCard);
+            G.ui.AddNewCard(CardLibrary.populationCard);
             G.ui.AddNewCard(CardLibrary.flowerCard);
             G.ui.AddNewCard(CardLibrary.devilDebugCard);
-            civStats.SetData(data);
-
             StartCoroutine(InitialSequence());
 
             // ShowGod();

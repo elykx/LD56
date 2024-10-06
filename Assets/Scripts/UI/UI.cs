@@ -15,9 +15,8 @@ namespace LD56.Assets.Scripts.UI {
 
         public TextMeshProUGUI numberPeople;
         public TextMeshProUGUI hapinessPeople;
-        public TextMeshProUGUI healthPeople;
         public TextMeshProUGUI foodPeople;
-        public TextMeshProUGUI technologyPeople;
+
 
         public List<GameObject> poolCards;
 
@@ -64,11 +63,10 @@ namespace LD56.Assets.Scripts.UI {
         }
 
         private void UpdateHeader() {
+            Debug.Log(G.data.PeopleNumber);
             numberPeople.text = Convert.ToInt32(G.data.PeopleNumber).ToString();
             hapinessPeople.text = Convert.ToInt32(G.data.PeopleHappiness).ToString();
-            healthPeople.text = Convert.ToInt32(G.data.PeopleHealth).ToString();
             foodPeople.text = Convert.ToInt32(G.data.PeopleFood).ToString();
-            technologyPeople.text = Convert.ToInt32(G.data.PeopleTechnology).ToString();
         }
 
         public void SetGameState(GameState newState) {

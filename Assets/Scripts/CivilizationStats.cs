@@ -5,113 +5,94 @@ namespace LD56.Assets.Scripts {
     public class CivilizationStats : MonoBehaviour {
         // Основные параметры
         public float targetPopulation = 1000f;
-        public float growthDuration = 1f;
+        public float growthDuration = 3000f; // Время для достижения цели (5 минут = 300 секунд)
 
         // Коэффициенты влияния
-        public float foodFactor => data.PeopleFood / 100f;
-        public float happinessFactor => data.PeopleHappiness / 100f;
-        public float technologyFactor => 1f + (data.PeopleTechnology / 100f);
-        public float diseaseFactor => 1f - (0.5f * (100 - data.PeopleHealth) / 100f);
+        public float foodFactor => Mathf.Clamp(G.data.PeopleFood / 100f, 0.5f, 1f); // Ограничиваем до 0.5-1
+        public float happinessFactor => Mathf.Clamp(G.data.PeopleHappiness / 100f, 0.5f, 1f); // Ограничиваем до 0.5-1
 
         // Параметры управления
         public float happinessDecayRate = 0.1f;
         public float foodDecayRate = 0.05f;
         public float foodIncreaseAmount = 10f;
-        public float technologyGrowthRate = 0.01f;
-        public float healthChange = 0f;
 
-        private float growthRate;
         private float elapsedTime;
-        private Data data;
-
-        public void SetData(Data initData) {
-            data = initData;
-        }
+        private float populationToAddBuff = 0f;
 
         public void SetPeopleNum(int num) {
-            data.SetPeopleNumber(num);
+            G.data.SetPeopleNumber(num);
         }
 
         void Update() {
-            if (data == null || data.PeopleNumber == 0) return;
-
-            growthRate = Mathf.Log(targetPopulation / data.PeopleNumber) / growthDuration;
+            if (G.data == null) return;
 
             UpdatePopulation();
             UpdateHappiness();
             UpdateFood();
-            UpdateTechnology();
-            UpdateHealth();
-        }
-
-        private void UpdateHealth() {
-            data.PeopleHealth -= healthChange;
-            if (data.PeopleHealth < 0) {
-                data.PeopleHealth = 0;
-            }
-        }
-
-        private void UpdateTechnology() {
-            data.PeopleTechnology += technologyGrowthRate * Time.deltaTime;
         }
 
         private void UpdateFood() {
-            data.PeopleFood -= foodDecayRate * Time.deltaTime;
+            G.data.PeopleFood -= foodDecayRate * Time.deltaTime;
 
-            if (data.PeopleFood < 0) {
-                data.PeopleFood = 0;
-                healthChange -= 5f;
+            if (G.data.PeopleFood < 0) {
+                G.data.PeopleFood = 0;
+                IncreasePopulation(-5f);
             }
         }
 
         private void UpdateHappiness() {
-            data.PeopleHappiness -= happinessDecayRate * Time.deltaTime;
+            G.data.PeopleHappiness -= happinessDecayRate * Time.deltaTime;
 
-            if (data.PeopleHappiness < 0) {
-                data.PeopleHappiness = 0;
-                healthChange -= 5f;
+            if (G.data.PeopleHappiness < 0) {
+                G.data.PeopleHappiness = 0;
+                IncreasePopulation(-5f);
             }
         }
 
-        public void IncreaseHappiness(int amount) {
-            data.PeopleHappiness += amount;
-            if (data.PeopleHappiness > 100)
-                data.PeopleHappiness = 100;
+        public void IncreaseHappiness(float amount) {
+            G.data.PeopleHappiness += amount;
+            if (G.data.PeopleHappiness > 100)
+                G.data.PeopleHappiness = 100;
         }
 
-        public void IncreaseFood(int amount) {
-            data.PeopleFood += amount;
-            if (data.PeopleFood > 100)
-                data.PeopleFood = 100;
+        public void IncreaseFood(float amount) {
+            G.data.PeopleFood += amount;
+            if (G.data.PeopleFood > 100)
+                G.data.PeopleFood = 100;
         }
 
-        public void IncreaseHealth(int amount) {
-            data.PeopleHealth += amount;
-            if (data.PeopleHealth > 100)
-                data.PeopleHealth = 100;
-        }
-        public void IncreasePopulation(int amount) {
-            data.PeopleNumber += amount;
-            if (data.PeopleNumber > 1000)
-                data.PeopleNumber = 1000;
-        }
-        public void IncreaseTechnology(int amount) {
-            data.PeopleTechnology += amount;
-            if (data.PeopleTechnology > 100)
-                data.PeopleTechnology = 100;
+        public void IncreasePopulation(float amount) {
+            populationToAddBuff += amount;
         }
 
         private void UpdatePopulation() {
-            if (data.PeopleNumber < targetPopulation && elapsedTime < growthDuration) {
-                elapsedTime += Time.deltaTime / 60;
+            if (populationToAddBuff != 0) {
+                G.data.PeopleNumber += populationToAddBuff;
+                populationToAddBuff = 0f;
+            }
+            if (G.data.PeopleNumber < targetPopulation && G.data.PeopleNumber > 0) {
+                elapsedTime += Time.deltaTime;
 
-                float totalFactor = foodFactor * happinessFactor * technologyFactor * diseaseFactor;
+                // Рассчитываем текущий процент времени, прошедший от всего времени роста
+                float growthProgress = elapsedTime / (growthDuration * 60f); // growthDuration = 5 минут
 
-                data.PeopleNumber = (int)(2 * Mathf.Exp(growthRate * totalFactor * elapsedTime));
+                // Экспоненциальный рост по формуле P = P0 * e^(r * t), где P0 = 2, targetPopulation = 1000
+                if (growthProgress <= 1f) {
+                    // Рассчитываем новое население с учетом факторов
+                    float newPopulation = Mathf.Lerp(G.data.PeopleNumber, targetPopulation, Mathf.Pow(growthProgress, 2f));
 
-                if (data.PeopleNumber > targetPopulation)
-                    data.PeopleNumber = (int)targetPopulation;
+                    // Увеличиваем текущее население до нового значения, ограниченного целевым
+                    var populationToAdd = Mathf.Clamp((int)(newPopulation * foodFactor * happinessFactor), G.data.PeopleNumber, (int)targetPopulation);
+                    var increaseAmount = populationToAdd - G.data.PeopleNumber; // Рассчитываем, на сколько нужно увеличить
 
+                    Debug.Log("populationToAdd " + populationToAdd + " increaseAmount " + increaseAmount);
+                    G.data.PeopleNumber += increaseAmount;
+
+                }
+
+                if (G.data.PeopleNumber >= targetPopulation) {
+                    G.data.PeopleNumber = (int)targetPopulation;
+                }
             }
         }
     }

@@ -5,18 +5,17 @@ namespace LD56.Assets.Scripts {
         Number,
         Food,
         Hapiness,
-        Health,
-        Technology,
         DevilDebug
     }
 
     public class Card {
         public string Text { get; set; }
         public CardType Type { get; set; }
-        public int Value { get; set; }
+        public float Value { get; set; }
         public Color Color;
 
-        public Card(string text, CardType type, int value) {
+
+        public Card(string text, CardType type, float value) {
             Text = text;
             Type = type;
             Value = value;
@@ -30,12 +29,6 @@ namespace LD56.Assets.Scripts {
                     break;
                 case CardType.Hapiness:
                     G.main.civStats.IncreaseHappiness(Value);
-                    break;
-                case CardType.Health:
-                    G.main.civStats.IncreaseHealth(Value);
-                    break;
-                case CardType.Technology:
-                    G.main.civStats.IncreaseTechnology(Value);
                     break;
                 case CardType.Number:
                     G.main.civStats.IncreasePopulation(Value);

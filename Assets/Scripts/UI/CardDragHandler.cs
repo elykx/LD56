@@ -42,7 +42,7 @@ namespace LD56.Assets.Scripts.UI {
         }
 
         public void OnPointerExit(PointerEventData eventData) {
-
+            LeanTween.moveY(rectTransform, rectTransform.anchoredPosition.y - 20f, 0.2f).setEase(LeanTweenType.easeInBack);
         }
     }
 }
