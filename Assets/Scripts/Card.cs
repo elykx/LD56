@@ -12,14 +12,15 @@ namespace LD56.Assets.Scripts {
         public string Text { get; set; }
         public CardType Type { get; set; }
         public float Value { get; set; }
-        public Color Color;
+        public Sprite Image { get; private set; }
 
 
-        public Card(string text, CardType type, float value) {
+
+        public Card(string text, CardType type, float value, Sprite image) {
             Text = text;
             Type = type;
             Value = value;
-            Color = G.ColorFromRGB(224, 223, 223);
+            Image = image;
         }
 
         public void ApplyEffect() {

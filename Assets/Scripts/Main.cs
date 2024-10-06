@@ -39,13 +39,8 @@ namespace LD56.Assets.Scripts {
             G.ui.AddNewCard(CardLibrary.flowerCard);
             G.ui.AddNewCard(CardLibrary.devilDebugCard);
             StartCoroutine(InitialSequence());
+            StartCoroutine(ProvideCards());
 
-            // ShowGod();
-            // G.ui.StartGodDialogue("<!wait=1.5> Фух, кажется уже шестой день... <!wait=1.5> Сегодня я создам уникальных существ");
-            // civStats.SetPeopleNum(2);
-
-            // // Запускаем корутину для случайных диалогов
-            // StartCoroutine(RandomDialogueCoroutine());
         }
 
         private IEnumerator InitialSequence() {
@@ -93,6 +88,37 @@ namespace LD56.Assets.Scripts {
                 }
                 if (G.currentState == GameState.Paused) yield return null;
 
+            }
+        }
+
+        private IEnumerator ProvideCards() {
+            while (true) {
+                int currentCardCount = G.ui.GetCurrentCardCount(); // Получаем текущее количество карточек
+
+                // Проверяем условия для выдачи карточек
+                if (currentCardCount < 3) {
+                    // Выдача по одной карточке каждые 7 секунд
+                    yield return new WaitForSeconds(7);
+                    GiveRandomCard();
+                }
+                else if (currentCardCount < 5) {
+                    // Выдача по одной карточке каждые 12 секунд
+                    yield return new WaitForSeconds(12);
+                    GiveRandomCard();
+                }
+                else {
+                    // Если 5 или более, не выдавать карты
+                    yield return null; // Ждем следующего кадра
+                }
+            }
+        }
+
+        private void GiveRandomCard() {
+            Debug.Log("Give random card");
+            if (CardLibrary.cards.Count > 0) {
+                int randomIndex = Random.Range(0, CardLibrary.cards.Count);
+                Card selectedCard = CardLibrary.cards[randomIndex];
+                G.ui.AddNewCard(selectedCard);
             }
         }
 

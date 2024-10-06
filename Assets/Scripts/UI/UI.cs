@@ -29,6 +29,9 @@ namespace LD56.Assets.Scripts.UI {
         public TMPWriter textAnimatorGod;
         public TMPWriter textAnimatorDevil;
 
+        public List<Sprite> cardSprites;
+
+
         private float dialogueDuration = 6f;
 
         private void Awake() {
@@ -83,14 +86,14 @@ namespace LD56.Assets.Scripts.UI {
         }
 
         public void AddNewCard(Card card) {
+            Debug.Log("Give  card " + card.Text.ToString());
             foreach (var cardObj in poolCards) {
                 if (cardObj.activeSelf == false) {
                     var childBack = cardObj.transform.Find("Background");
                     var childImage = cardObj.transform.Find("Image");
                     var childText = cardObj.transform.Find("Text");
 
-                    childBack.GetComponent<Image>().color = card.Color;
-                    // childImage.GetComponent<Image>().sprite = card.Image;
+                    childBack.GetComponent<Image>().sprite = card.Image;
                     childText.GetComponent<TextMeshProUGUI>().text = card.Text;
                     cardObj.GetComponent<CardDragHandler>().Card = card;
                     cardObj.SetActive(true);
@@ -98,7 +101,6 @@ namespace LD56.Assets.Scripts.UI {
                 }
             }
         }
-
 
         public void StartGodDialogue(string text) {
             if (!isGodDialogueActive) {
@@ -167,6 +169,18 @@ namespace LD56.Assets.Scripts.UI {
         // Методы для проверки завершения диалога
         public bool IsGodDialogueFinished() => !isGodDialogueActive;
         public bool IsDevilDialogueFinished() => !isDevilDialogueActive;
-    }
 
+        public int GetCurrentCardCount() {
+            int activeCount = 0;
+
+            // Проходим по всем карточкам и считаем только активные
+            foreach (GameObject card in poolCards) {
+                if (card.activeSelf) {
+                    activeCount++;
+                }
+            }
+
+            return activeCount;
+        }
+    }
 }
