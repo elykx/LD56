@@ -6,7 +6,9 @@ namespace LD56.Assets.Scripts {
     public enum GameState {
         Menu,
         Playing,
-        Paused
+        Paused,
+        Win,
+        Lose
     }
 
     public static class G {

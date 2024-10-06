@@ -8,10 +8,9 @@ using UnityEngine.UI;
 
 namespace LD56.Assets.Scripts.UI {
     public class UI : MonoBehaviour {
-        public TextMeshProUGUI debugTextUI;
-        public GameObject menuCanvas;
         public GameObject gameCanvas;
-        public GameObject pauseCanvas;
+        public GameObject failCanvas;
+        public GameObject winCanvas;
 
         public TextMeshProUGUI numberPeople;
         public TextMeshProUGUI hapinessPeople;
@@ -31,7 +30,6 @@ namespace LD56.Assets.Scripts.UI {
 
         public List<Sprite> cardSprites;
 
-
         private float dialogueDuration = 6f;
 
         private void Awake() {
@@ -40,29 +38,13 @@ namespace LD56.Assets.Scripts.UI {
 
         void Update() {
             UpdateUI();
-
-            if (Input.GetKeyDown(KeyCode.Escape) && G.currentState == GameState.Playing) {
-                SetGameState(GameState.Paused);
-                G.audio.PlaySoundEffect(G.Effect);
-            }
-            else if (Input.GetKeyDown(KeyCode.Escape) && G.currentState == GameState.Paused) {
-                SetGameState(GameState.Playing);
-            }
-            else if (Input.GetKeyDown(KeyCode.E) && G.currentState == GameState.Paused) {
-                SetGameState(GameState.Menu);
-                G.audio.PlaySoundEffect(G.Effect);
-            }
-            else if (Input.GetKeyDown(KeyCode.E) && G.currentState == GameState.Menu) {
-                SetGameState(GameState.Playing);
-            }
-
             UpdateHeader();
         }
 
         private void UpdateUI() {
-            menuCanvas.SetActive(G.currentState == GameState.Menu);
             gameCanvas.SetActive(G.currentState == GameState.Playing);
-            pauseCanvas.SetActive(G.currentState == GameState.Paused);
+            winCanvas.SetActive(G.currentState == GameState.Win);
+            failCanvas.SetActive(G.currentState == GameState.Lose);
         }
 
         private void UpdateHeader() {
@@ -72,10 +54,19 @@ namespace LD56.Assets.Scripts.UI {
             foodPeople.text = Convert.ToInt32(G.data.PeopleFood).ToString();
         }
 
+        public void FinishGameLose() {
+            SetGameState(GameState.Lose);
+        }
+
+
+        public void FinishGameWin() {
+            SetGameState(GameState.Win);
+        }
+
         public void SetGameState(GameState newState) {
             G.currentState = newState;
 
-            if (newState == GameState.Paused) {
+            if (newState == GameState.Paused || newState == GameState.Win || newState == GameState.Lose) {
                 Time.timeScale = 0;
             }
             else {
@@ -94,6 +85,7 @@ namespace LD56.Assets.Scripts.UI {
                     var childText = cardObj.transform.Find("Text");
 
                     childBack.GetComponent<Image>().sprite = card.Image;
+                    childImage.GetComponent<Image>().sprite = card.Icon;
                     childText.GetComponent<TextMeshProUGUI>().text = card.Text;
                     cardObj.GetComponent<CardDragHandler>().Card = card;
                     cardObj.SetActive(true);

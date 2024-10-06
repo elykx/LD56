@@ -7,7 +7,7 @@ namespace LD56.Assets.Scripts.UI {
         private RectTransform rectTransform;
         private CanvasGroup canvasGroup;
         private Vector2 startPosition;
-        private Vector2 offset;
+        private bool isDragging = false;
 
         public Card Card;
 
@@ -20,29 +20,36 @@ namespace LD56.Assets.Scripts.UI {
         public void OnBeginDrag(PointerEventData eventData) {
             canvasGroup.alpha = 0.8f;
             canvasGroup.blocksRaycasts = false;
-            offset = new Vector2(rectTransform.rect.width / 2, rectTransform.rect.height / 2);
+            isDragging = true;
 
         }
 
         public void OnDrag(PointerEventData eventData) {
-            rectTransform.anchoredPosition += eventData.delta;
+            // Получаем текущую позицию мыши в экранных координатах
+            Vector2 mousePosition = eventData.position;
+
+            // Устанавливаем новую позицию карты без учета родительского RectTransform
+            rectTransform.position = mousePosition;
         }
 
         public void OnEndDrag(PointerEventData eventData) {
-            rectTransform.anchoredPosition = startPosition - offset;
+            rectTransform.anchoredPosition = startPosition;
             canvasGroup.alpha = 1f;
             canvasGroup.blocksRaycasts = true;
             gameObject.SetActive(false);
+            isDragging = false;
 
             Card.ApplyEffect();
         }
 
         public void OnPointerEnter(PointerEventData eventData) {
-            LeanTween.moveY(rectTransform, rectTransform.anchoredPosition.y + 20f, 0.2f).setEase(LeanTweenType.easeOutBack);
+            LeanTween.moveY(rectTransform, rectTransform.anchoredPosition.y + 50f, 0.2f).setEase(LeanTweenType.easeOutBack);
         }
 
         public void OnPointerExit(PointerEventData eventData) {
-            LeanTween.moveY(rectTransform, rectTransform.anchoredPosition.y - 20f, 0.2f).setEase(LeanTweenType.easeInBack);
+            if (!isDragging) { 
+                LeanTween.moveY(rectTransform, rectTransform.anchoredPosition.y - 50f, 0.2f).setEase(LeanTweenType.easeInBack);
+            }
         }
     }
 }

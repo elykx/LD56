@@ -4,19 +4,15 @@ using UnityEngine;
 namespace LD56.Assets.Scripts {
     public class CivilizationStats : MonoBehaviour {
         // Основные параметры
-        public float targetPopulation = 1000f;
-        public float growthDuration = 3000f; // Время для достижения цели (5 минут = 300 секунд)
+        private float targetPopulation = 1000f;
 
         // Коэффициенты влияния
-        public float foodFactor => Mathf.Clamp(G.data.PeopleFood / 100f, 0.5f, 1f); // Ограничиваем до 0.5-1
-        public float happinessFactor => Mathf.Clamp(G.data.PeopleHappiness / 100f, 0.5f, 1f); // Ограничиваем до 0.5-1
+        private float foodFactor = 0.1f;
+        private float happinessFactor = 0.1f;
 
         // Параметры управления
-        public float happinessDecayRate = 0.1f;
-        public float foodDecayRate = 0.05f;
-        public float foodIncreaseAmount = 10f;
-
-        private float elapsedTime;
+        private float happinessDecayRate = 0.35f;
+        private float foodDecayRate = 0.35f;
         private float populationToAddBuff = 0f;
 
         public void SetPeopleNum(int num) {
@@ -33,7 +29,6 @@ namespace LD56.Assets.Scripts {
 
         private void UpdateFood() {
             G.data.PeopleFood -= foodDecayRate * Time.deltaTime;
-
             if (G.data.PeopleFood < 0) {
                 G.data.PeopleFood = 0;
                 IncreasePopulation(-5f);
@@ -68,32 +63,45 @@ namespace LD56.Assets.Scripts {
         private void UpdatePopulation() {
             if (populationToAddBuff != 0) {
                 G.data.PeopleNumber += populationToAddBuff;
+                if (G.data.PeopleNumber < 0) {
+                    G.data.PeopleNumber = 0;
+                }
                 populationToAddBuff = 0f;
             }
             if (G.data.PeopleNumber < targetPopulation && G.data.PeopleNumber > 0) {
-                elapsedTime += Time.deltaTime;
+                float growthRate;
 
-                // Рассчитываем текущий процент времени, прошедший от всего времени роста
-                float growthProgress = elapsedTime / (growthDuration * 60f); // growthDuration = 5 минут
+                float foodInfluence = G.data.PeopleFood * foodFactor;
+                float happinessInfluence = G.data.PeopleHappiness * happinessFactor;
 
-                // Экспоненциальный рост по формуле P = P0 * e^(r * t), где P0 = 2, targetPopulation = 1000
-                if (growthProgress <= 1f) {
-                    // Рассчитываем новое население с учетом факторов
-                    float newPopulation = Mathf.Lerp(G.data.PeopleNumber, targetPopulation, Mathf.Pow(growthProgress, 2f));
-
-                    // Увеличиваем текущее население до нового значения, ограниченного целевым
-                    var populationToAdd = Mathf.Clamp((int)(newPopulation * foodFactor * happinessFactor), G.data.PeopleNumber, (int)targetPopulation);
-                    var increaseAmount = populationToAdd - G.data.PeopleNumber; // Рассчитываем, на сколько нужно увеличить
-
-                    Debug.Log("populationToAdd " + populationToAdd + " increaseAmount " + increaseAmount);
-                    G.data.PeopleNumber += increaseAmount;
-
+                if (G.data.PeopleNumber < 50) {
+                    growthRate = 1f * foodInfluence * happinessInfluence;
+                    G.data.PeopleNumber += growthRate * Time.deltaTime / 20f;
+                }
+                else if (G.data.PeopleNumber < 100) {
+                    growthRate = 1.5f * foodInfluence * happinessInfluence;
+                    G.data.PeopleNumber += growthRate * Time.deltaTime / 15f;
+                }
+                else if (G.data.PeopleNumber < 250) {
+                    growthRate = 2 * foodInfluence * happinessInfluence;
+                    G.data.PeopleNumber += growthRate * Time.deltaTime / 10f;
+                }
+                else {
+                    growthRate = 3 * foodInfluence * happinessInfluence;
+                    G.data.PeopleNumber += growthRate * Time.deltaTime / 5f;
                 }
 
-                if (G.data.PeopleNumber >= targetPopulation) {
-                    G.data.PeopleNumber = (int)targetPopulation;
+                if (G.data.PeopleNumber < 0) {
+                    Debug.Log("lower");
+
+                    G.data.PeopleNumber = 0;
                 }
+                if (G.data.PeopleNumber > 1000)
+                    G.data.PeopleNumber = 1000;
             }
+        }
+        private float Sigmoid(float x) {
+            return 1f / (1f + Mathf.Exp(-12f * (x - 0.5f)));
         }
     }
 }

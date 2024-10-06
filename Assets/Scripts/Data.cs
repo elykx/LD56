@@ -17,9 +17,9 @@ namespace LD56.Assets.Scripts
         public Data() {
             GodPower = 0;
             DevilPower = 0;
-            PeopleNumber = 0;
-            PeopleFood = 20f;
-            PeopleHappiness = 100f;
+            PeopleNumber = 2;
+            PeopleFood = 25f;
+            PeopleHappiness = 25f;
         }
 
         public void SetPeopleNumber(int peopleNumber) {
