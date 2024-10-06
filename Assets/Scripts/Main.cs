@@ -31,7 +31,7 @@ namespace LD56.Assets.Scripts {
 
         private string[] devilDialogs = new string[]
         {
-        "<!wait=1.5> <wave> Potential? Ha! There's more weakness in them than strength",
+        "<!wait=1.5> Potential? Ha! There's more weakness in them than strength",
         "<!wait=1.5> Mistakes are wonderful... They’ll only prove how pathetic they are",
         "<!wait=1.5> You really think you're in control of everything? Ha! I will teach you humility."
         };
@@ -76,8 +76,10 @@ namespace LD56.Assets.Scripts {
 
             for (int i = 0; i < populationThresholds.Length; i++) {
                 if (currentPopulation >= populationThresholds[i] && !eventsTriggered[i]) {
-                    TriggerEventByIndex(i);
-                    eventsTriggered[i] = true;
+                    if (G.ui.IsDevilDialogueFinished()) {
+                        TriggerEventByIndex(i);
+                        eventsTriggered[i] = true;
+                    }
                 }
             }
         }
@@ -133,7 +135,6 @@ namespace LD56.Assets.Scripts {
         }
 
         private IEnumerator ThirdDemonEvent() {
-
             ShowDevil();
             G.ui.StartDevilDialogue("<!wait=1.5> Why are you helping them? Let's just end it all right now...");
             if (Random.value > 0.5f) {
@@ -171,10 +172,9 @@ namespace LD56.Assets.Scripts {
 
         private IEnumerator RandomAndFixedDialogueCoroutine() {
             while (true) {
+                float waitTime = Random.Range(15f, 30f);
+                yield return new WaitForSeconds(waitTime);
                 if (G.ui.IsDevilDialogueFinished() && G.ui.IsGodDialogueFinished()) {
-                    float waitTime = Random.Range(15f, 30f);
-                    yield return new WaitForSeconds(waitTime);
-
                     if (Random.value > 0.5f) {
                         string randomGodDialog = godDialogs[Random.Range(0, godDialogs.Length)];
                         G.ui.StartGodDialogue(randomGodDialog);
@@ -201,7 +201,6 @@ namespace LD56.Assets.Scripts {
                     }
                 }
                 if (G.currentState == GameState.Paused) yield return null;
-
             }
         }
 
@@ -224,7 +223,6 @@ namespace LD56.Assets.Scripts {
         }
 
         private void GiveRandomCard() {
-            Debug.Log("Give random card");
             if (CardLibrary.cards.Count > 0) {
                 int randomIndex = Random.Range(0, CardLibrary.cards.Count);
                 Card selectedCard = CardLibrary.cards[randomIndex];
@@ -246,7 +244,6 @@ namespace LD56.Assets.Scripts {
         }
 
         private void ShowDevil() {
-            Debug.Log("showing devil");
             devil.transform.localScale = Vector3.zero;
             devil.SetActive(true);
 

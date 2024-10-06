@@ -21,12 +21,14 @@ namespace LD56.Assets.Scripts {
 
         // Названия клипов
         public const string NewBeginningTheme = "newBeginning";
-        public const string Effect = "OneEffect";
+        public const string EndingTheme = "ending";
+        public const string Effect = "devilEffect";
 
         public const string AudioPath = "Audio/";
 
         // Полные пути к аудиофайлам
         public const string NewBeginningPath = AudioPath + NewBeginningTheme;
+        public const string EndingThemePath = AudioPath + EndingTheme;
         public const string EffectSoundPath = AudioPath + Effect;
 
         public static Color ColorFromRGB(int r, int g, int b) {

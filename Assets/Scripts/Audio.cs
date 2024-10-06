@@ -12,12 +12,8 @@ namespace LD56.Assets.Scripts {
         private void Awake() {
             G.audio = this;
             musicClips.Add(G.NewBeginningTheme, Resources.Load<AudioClip>(G.NewBeginningPath));
+            musicClips.Add(G.EndingTheme, Resources.Load<AudioClip>(G.EndingThemePath));
             soundEffects.Add(G.Effect, Resources.Load<AudioClip>(G.EffectSoundPath));
-
-            if (musicClips[G.NewBeginningTheme] == null)
-                Debug.LogError($"Не удалось загрузить музыкальный клип {G.NewBeginningPath}");
-            if (soundEffects[G.Effect] == null)
-                Debug.LogError($"Не удалось загрузить звуковой эффект {G.EffectSoundPath}");
         }
 
         public void PlayMusic(string clipName, bool loop = false) {

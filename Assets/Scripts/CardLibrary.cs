@@ -7,7 +7,7 @@ namespace LD56.Assets.Scripts {
     public static class CardLibrary {
         public static Card foodCard = new Card(
             "Blessing of the harvest",
-            "increases food <sprite=0> +20",
+            "increases food <sprite=0> <b>+20",
             CardType.Food,
             20f,
             G.ui.cardSprites.Find(s => s.name == "food"),
@@ -16,7 +16,7 @@ namespace LD56.Assets.Scripts {
 
         public static Card foodCard2 = new Card(
             "Food supplies",
-            "increases food <sprite=0> +10",
+            "increases food <sprite=0> <b>+10",
             CardType.Food,
             10f,
             G.ui.cardSprites.Find(s => s.name == "food"),
@@ -25,7 +25,7 @@ namespace LD56.Assets.Scripts {
 
         public static Card foodCard3 = new Card(
             "The Feast of the Gods",
-            "increases food <sprite=0> +30",
+            "increases food <sprite=0> <b>+30",
             CardType.Food,
             30f,
             G.ui.cardSprites.Find(s => s.name == "food"),
@@ -34,7 +34,7 @@ namespace LD56.Assets.Scripts {
 
         public static Card hapinessCard = new Card(
             "A Word of Encouragement",
-            "increases happiness <sprite=1> +20",
+            "increases happiness <sprite=1> <b>+20",
             CardType.Hapiness,
             20f,
             G.ui.cardSprites.Find(s => s.name == "hapiness"),
@@ -43,7 +43,7 @@ namespace LD56.Assets.Scripts {
 
         public static Card hapinessCard2 = new Card(
             "Festival of Joy",
-            "increases happiness <sprite=1> +10",
+            "increases happiness <sprite=1> <b>+10",
             CardType.Hapiness,
             10f,
             G.ui.cardSprites.Find(s => s.name == "hapiness"),
@@ -52,7 +52,7 @@ namespace LD56.Assets.Scripts {
 
         public static Card hapinessCard3 = new Card(
            "A bright future",
-           "increases happiness <sprite=1> +30",
+           "increases happiness <sprite=1> <b>+30",
            CardType.Hapiness,
            30f,
            G.ui.cardSprites.Find(s => s.name == "hapiness"),
@@ -61,7 +61,7 @@ namespace LD56.Assets.Scripts {
 
         public static Card populationCard = new Card(
             "The Blessing of Birth",
-            "increases population <sprite=2> +20",
+            "increases population <sprite=2> <b>+20",
             CardType.Number,
             20f,
             G.ui.cardSprites.Find(s => s.name == "population"),
@@ -70,7 +70,7 @@ namespace LD56.Assets.Scripts {
 
         public static Card populationCard2 = new Card(
             "Mother Earth",
-            "increases population <sprite=2> +30",
+            "increases population <sprite=2> <b>+30",
             CardType.Number,
             30f,
             G.ui.cardSprites.Find(s => s.name == "population"),
@@ -79,7 +79,7 @@ namespace LD56.Assets.Scripts {
 
         public static Card populationCard3 = new Card(
             "Family Union",
-            "increases population <sprite=2> +10",
+            "increases population <sprite=2> <b>+10",
             CardType.Number,
             10f,
             G.ui.cardSprites.Find(s => s.name == "population"),
@@ -88,7 +88,7 @@ namespace LD56.Assets.Scripts {
 
         public static Card godCard = new Card(
             "The Intervention of the Eternal",
-            "increases <br> <sprite=0> <sprite=1> <sprite=2> +20",
+            "increases <br> <sprite=0> <sprite=1> <sprite=2> <b>+20",
             CardType.God,
             20f,
             G.ui.cardSprites.Find(s => s.name == "god"),
@@ -97,7 +97,7 @@ namespace LD56.Assets.Scripts {
 
         public static Card godCard1 = new Card(
             "Harmony",
-            "increases <br> <sprite=0> <sprite=1> <sprite=2> +10",
+            "increases <br> <sprite=0> <sprite=1> <sprite=2> <b>+10",
             CardType.God,
             10f,
             G.ui.cardSprites.Find(s => s.name == "god"),

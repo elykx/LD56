@@ -25,10 +25,7 @@ namespace LD56.Assets.Scripts.UI {
         }
 
         public void OnDrag(PointerEventData eventData) {
-            // Получаем текущую позицию мыши в экранных координатах
             Vector2 mousePosition = eventData.position;
-
-            // Устанавливаем новую позицию карты без учета родительского RectTransform
             rectTransform.position = mousePosition;
         }
 

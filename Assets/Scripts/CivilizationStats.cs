@@ -133,8 +133,6 @@ namespace LD56.Assets.Scripts {
                 }
 
                 if (G.data.PeopleNumber < 0) {
-                    Debug.Log("lower");
-
                     G.data.PeopleNumber = 0;
                 }
                 if (G.data.PeopleNumber > 1000)

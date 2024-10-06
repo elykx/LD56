@@ -55,8 +55,7 @@ namespace LD56.Assets.Scripts.UI {
         }
 
         private void UpdateHeader() {
-            Debug.Log(G.data.PeopleNumber);
-            numberPeople.text = Convert.ToInt32(G.data.PeopleNumber).ToString();
+            numberPeople.text = Convert.ToInt32(G.data.PeopleNumber).ToString() + "/1000";
             hapinessPeople.text = Convert.ToInt32(G.data.PeopleHappiness).ToString();
             foodPeople.text = Convert.ToInt32(G.data.PeopleFood).ToString();
         }
@@ -84,7 +83,6 @@ namespace LD56.Assets.Scripts.UI {
         }
 
         public void AddNewCard(Card card) {
-            Debug.Log("Give  card " + card.Text.ToString());
             foreach (var cardObj in poolCards) {
                 if (cardObj.activeSelf == false) {
                     var childBack = cardObj.transform.Find("Background");
@@ -106,7 +104,7 @@ namespace LD56.Assets.Scripts.UI {
         public void StartGodDialogue(string text) {
             if (!isGodDialogueActive) {
                 isGodDialogueActive = true;
-                StartCoroutine(AutoCloseDialogue(godDialogue)); // Запускаем корутину
+                StartCoroutine(AutoCloseDialogue(godDialogue));
                 ShowGodDialogue(text);
             }
         }
@@ -115,17 +113,14 @@ namespace LD56.Assets.Scripts.UI {
             if (!isDevilDialogueActive) {
                 isDevilDialogueActive = true;
                 ShowDevilDialogue(text);
-                StartCoroutine(AutoCloseDialogue(devilDialogue)); // Запускаем корутину
+                StartCoroutine(AutoCloseDialogue(devilDialogue));
             }
         }
 
         private IEnumerator AutoCloseDialogue(GameObject dialogueObject) {
-            Debug.Log("start timer");
             yield return new WaitForSeconds(dialogueDuration);
-            Debug.Log("end timer");
             CloseDialogue(dialogueObject);
 
-            // Обновляем состояние активности диалога
             if (dialogueObject == godDialogue) {
                 isGodDialogueActive = false;
             }
@@ -141,7 +136,6 @@ namespace LD56.Assets.Scripts.UI {
             LeanTween.scale(godDialogue, Vector3.one, 2f)
                 .setEaseOutBack()
                 .setOnComplete(() => {
-                    // Сбрасываем позицию на стартовую
                     godDialogue.transform.localPosition = godDialogueStartPosition;
                 });
 
@@ -157,7 +151,6 @@ namespace LD56.Assets.Scripts.UI {
             LeanTween.scale(devilDialogue, Vector3.one, 2f)
                 .setEaseOutBack()
                 .setOnComplete(() => {
-                    // Сбрасываем позицию на стартовую
                     devilDialogue.transform.localPosition = devilDialogueStartPosition;
                 });
 
@@ -166,25 +159,19 @@ namespace LD56.Assets.Scripts.UI {
         }
 
         private void CloseDialogue(GameObject dialogueObject) {
-            Debug.Log("Attempting to close dialogue for object: " + dialogueObject.name + " Active: " + dialogueObject.activeSelf);
-            // Проверяем, активен ли объект, чтобы избежать попытки закрытия уже неактивного объекта
             if (!dialogueObject.activeSelf) return;
 
-            Debug.Log("close dialogue");
             LeanTween.scale(dialogueObject, Vector3.zero, 2f).setEaseInBack().setOnComplete(() => {
-                dialogueObject.SetActive(false); // Отключаем объект после завершения анимации
-                Debug.Log("dialogue closed");
+                dialogueObject.SetActive(false);
             });
         }
 
-        // Методы для проверки завершения диалога
         public bool IsGodDialogueFinished() => !isGodDialogueActive;
         public bool IsDevilDialogueFinished() => !isDevilDialogueActive;
 
         public int GetCurrentCardCount() {
             int activeCount = 0;
 
-            // Проходим по всем карточкам и считаем только активные
             foreach (GameObject card in poolCards) {
                 if (card.activeSelf) {
                     activeCount++;
