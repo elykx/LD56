@@ -36,6 +36,9 @@ namespace LD56.Assets.Scripts {
         "<!wait=1.5> You really think you're in control of everything? Ha! I will teach you humility."
         };
 
+        private float timeMorecardWait = 10f;
+        private float timeLowcardWait = 6f;
+
         void Awake() {
             G.main = this;
             G.data = data;
@@ -44,9 +47,9 @@ namespace LD56.Assets.Scripts {
 
         void Start() {
             G.ui.SetGameState(GameState.Playing);
-            G.ui.AddNewCard(CardLibrary.populationCard);
-            G.ui.AddNewCard(CardLibrary.common1);
-            G.ui.AddNewCard(CardLibrary.foodCard2);
+            GiveRandomCard();
+            GiveRandomCard();
+            GiveRandomCard();
             StartCoroutine(InitialSequence());
             StartCoroutine(ProvideCards());
 
@@ -100,12 +103,12 @@ namespace LD56.Assets.Scripts {
             }
             else {
                 storms.ForEach(s => s.SetActive(true));
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(4f);
                 storms.ForEach(s => s.SetActive(false));
             }
-            G.data.PeopleNumber /= 2;
-            G.data.PeopleFood -= 10;
-            G.data.PeopleHappiness -= 10;
+            G.data.PeopleNumber *= 0.5f;
+            G.data.PeopleFood *= 0.5f;
+            G.data.PeopleHappiness *= 0.5f;
             yield return new WaitUntil(() => G.ui.IsDevilDialogueFinished());
             HideDevil();
         }
@@ -119,12 +122,12 @@ namespace LD56.Assets.Scripts {
             }
             else {
                 storms.ForEach(s => s.SetActive(true));
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(4f);
                 storms.ForEach(s => s.SetActive(false));
             }
-            G.data.PeopleNumber /= 2;
-            G.data.PeopleFood /= 2;
-            G.data.PeopleHappiness /= 2;
+            G.data.PeopleNumber *= 0.5f;
+            G.data.PeopleFood *= 0.5f;
+            G.data.PeopleHappiness *= 0.5f;
             yield return new WaitUntil(() => G.ui.IsDevilDialogueFinished());
             HideDevil();
         }
@@ -139,12 +142,12 @@ namespace LD56.Assets.Scripts {
             }
             else {
                 storms.ForEach(s => s.SetActive(true));
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(4f);
                 storms.ForEach(s => s.SetActive(false));
             }
-            G.data.PeopleNumber -= 200;
-            G.data.PeopleFood /= 3;
-            G.data.PeopleHappiness /= 3;
+            G.data.PeopleNumber *= 0.75f;
+            G.data.PeopleFood *= 0.3f;
+            G.data.PeopleHappiness *= 0.3f;
             yield return new WaitUntil(() => G.ui.IsDevilDialogueFinished());
             HideDevil();
         }
@@ -187,9 +190,12 @@ namespace LD56.Assets.Scripts {
                         }
                         else if (Random.value > 0.5f) {
                             storms.ForEach(s => s.SetActive(true));
-                            yield return new WaitForSeconds(2f);
+                            yield return new WaitForSeconds(4f);
                             storms.ForEach(s => s.SetActive(false));
                         }
+                        G.data.PeopleNumber *= 0.8f;
+                        G.data.PeopleFood *= 0.8f;
+                        G.data.PeopleHappiness *= 0.8f;
                         yield return new WaitUntil(() => G.ui.IsDevilDialogueFinished());
                         HideDevil();
                     }
@@ -204,11 +210,11 @@ namespace LD56.Assets.Scripts {
                 int currentCardCount = G.ui.GetCurrentCardCount();
 
                 if (currentCardCount < 3) {
-                    yield return new WaitForSeconds(7);
+                    yield return new WaitForSeconds(timeLowcardWait);
                     GiveRandomCard();
                 }
                 else if (currentCardCount < 5) {
-                    yield return new WaitForSeconds(12);
+                    yield return new WaitForSeconds(timeMorecardWait);
                     GiveRandomCard();
                 }
                 else {
@@ -244,7 +250,7 @@ namespace LD56.Assets.Scripts {
             devil.transform.localScale = Vector3.zero;
             devil.SetActive(true);
 
-            LeanTween.scale(devil, Vector3.one * 3f, 1f).setEaseOutBack();
+            LeanTween.scale(devil, Vector3.one * 3.5f, 1f).setEaseOutBack();
         }
 
         private void HideDevil() {

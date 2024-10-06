@@ -11,8 +11,8 @@ namespace LD56.Assets.Scripts {
         private float happinessFactor = 0.1f;
 
         // Параметры управления
-        private float happinessDecayRate = 0.35f;
-        private float foodDecayRate = 0.35f;
+        private float happinessDecayRate = 0.25f;
+        private float foodDecayRate = 0.25f;
         private float populationToAddBuff = 0f;
 
         public void SetPeopleNum(int num) {
@@ -23,15 +23,54 @@ namespace LD56.Assets.Scripts {
             if (G.data == null) return;
 
             UpdatePopulation();
+            UpdateRates();
             UpdateHappiness();
             UpdateFood();
         }
 
+        private void UpdateRates() {
+            if (G.data.PeopleNumber < 50) {
+                happinessDecayRate = 0.25f;
+                foodDecayRate = 0.25f;
+            }
+            else if (G.data.PeopleNumber < 100) {
+                happinessDecayRate = 0.3f;
+                foodDecayRate = 0.3f;
+            }
+            else if (G.data.PeopleNumber < 175) {
+                happinessDecayRate = 0.35f;
+                foodDecayRate = 0.35f;
+            }
+            else if (G.data.PeopleNumber < 250) {
+                happinessDecayRate = 0.4f;
+                foodDecayRate = 0.4f;
+            }
+            else if (G.data.PeopleNumber < 400) {
+                happinessDecayRate = 0.42f;
+                foodDecayRate = 0.42f;
+            }
+            else if (G.data.PeopleNumber < 600) {
+                happinessDecayRate = 0.45f;
+                foodDecayRate = 0.45f;
+            }
+            else if (G.data.PeopleNumber < 800) {
+                happinessDecayRate = 0.47f;
+                foodDecayRate = 0.47f;
+            }
+            else {
+                happinessDecayRate = 0.5f;
+                foodDecayRate = 0.5f;
+            }
+
+        }
+
         private void UpdateFood() {
             G.data.PeopleFood -= foodDecayRate * Time.deltaTime;
+
             if (G.data.PeopleFood < 0) {
                 G.data.PeopleFood = 0;
-                IncreasePopulation(-5f);
+                IncreasePopulation(-4f * Time.deltaTime);
+                IncreaseHappiness(-2f * Time.deltaTime);
             }
         }
 
@@ -40,7 +79,9 @@ namespace LD56.Assets.Scripts {
 
             if (G.data.PeopleHappiness < 0) {
                 G.data.PeopleHappiness = 0;
-                IncreasePopulation(-5f);
+                IncreasePopulation(-4f * Time.deltaTime);
+                IncreaseFood(-2f * Time.deltaTime);
+
             }
         }
 
@@ -79,15 +120,15 @@ namespace LD56.Assets.Scripts {
                     G.data.PeopleNumber += growthRate * Time.deltaTime / 20f;
                 }
                 else if (G.data.PeopleNumber < 100) {
-                    growthRate = 1.5f * foodInfluence * happinessInfluence;
+                    growthRate = 1.2f * foodInfluence * happinessInfluence;
                     G.data.PeopleNumber += growthRate * Time.deltaTime / 15f;
                 }
                 else if (G.data.PeopleNumber < 250) {
-                    growthRate = 2 * foodInfluence * happinessInfluence;
+                    growthRate = 1.4f * foodInfluence * happinessInfluence;
                     G.data.PeopleNumber += growthRate * Time.deltaTime / 10f;
                 }
                 else {
-                    growthRate = 3 * foodInfluence * happinessInfluence;
+                    growthRate = 1.5f * foodInfluence * happinessInfluence;
                     G.data.PeopleNumber += growthRate * Time.deltaTime / 5f;
                 }
 

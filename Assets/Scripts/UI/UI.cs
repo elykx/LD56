@@ -31,9 +31,16 @@ namespace LD56.Assets.Scripts.UI {
         public List<Sprite> cardSprites;
 
         private float dialogueDuration = 6f;
+        private Vector3 godDialogueStartPosition;
+        private Vector3 devilDialogueStartPosition;
 
         private void Awake() {
             G.ui = this;
+        }
+
+        private void Start() {
+            godDialogueStartPosition = godDialogue.transform.localPosition;
+            devilDialogueStartPosition = devilDialogue.transform.localPosition;
         }
 
         void Update() {
@@ -83,10 +90,12 @@ namespace LD56.Assets.Scripts.UI {
                     var childBack = cardObj.transform.Find("Background");
                     var childImage = cardObj.transform.Find("Image");
                     var childText = cardObj.transform.Find("Text");
+                    var childName = cardObj.transform.Find("Name");
 
                     childBack.GetComponent<Image>().sprite = card.Image;
                     childImage.GetComponent<Image>().sprite = card.Icon;
                     childText.GetComponent<TextMeshProUGUI>().text = card.Text;
+                    childName.GetComponent<TextMeshProUGUI>().text = card.Name;
                     cardObj.GetComponent<CardDragHandler>().Card = card;
                     cardObj.SetActive(true);
                     break;
@@ -129,18 +138,28 @@ namespace LD56.Assets.Scripts.UI {
             godDialogueText.text = "";
             godDialogue.SetActive(true);
 
-            LeanTween.scale(godDialogue, Vector3.one, 2f).setEaseOutBack();
+            LeanTween.scale(godDialogue, Vector3.one, 2f)
+                .setEaseOutBack()
+                .setOnComplete(() => {
+                    // Сбрасываем позицию на стартовую
+                    godDialogue.transform.localPosition = godDialogueStartPosition;
+                });
 
             godDialogueText.text = text;
             textAnimatorGod.StartWriter();
         }
 
         private void ShowDevilDialogue(string text) {
-            devilDialogue.transform.localScale = Vector3.zero; // Устанавливаем начальный масштаб 0
+            devilDialogue.transform.localScale = Vector3.zero;
             devilDialogueText.text = "";
             devilDialogue.SetActive(true);
 
-            LeanTween.scale(devilDialogue, Vector3.one, 2f).setEaseOutBack();
+            LeanTween.scale(devilDialogue, Vector3.one, 2f)
+                .setEaseOutBack()
+                .setOnComplete(() => {
+                    // Сбрасываем позицию на стартовую
+                    devilDialogue.transform.localPosition = devilDialogueStartPosition;
+                });
 
             devilDialogueText.text = text;
             textAnimatorDevil.StartWriter();
